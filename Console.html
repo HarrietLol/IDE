@@ -1,0 +1,173 @@
+﻿<!DOCTYPE html>
+<html style="cursor:default;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Console</title>
+<style>
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(vs/mem5YaGs126MiZpBA-UN7rgOX-hpOqc.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(vs/mem5YaGs126MiZpBA-UN7rgOVuhpOqc.woff2) format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(vs/mem5YaGs126MiZpBA-UN7rgOXuhpOqc.woff2) format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(vs/mem5YaGs126MiZpBA-UN7rgOUehpOqc.woff2) format('woff2');
+  unicode-range: U+0370-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(vs/mem5YaGs126MiZpBA-UN7rgOXehpOqc.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(vs/mem5YaGs126MiZpBA-UN7rgOXOhpOqc.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(vs/mem5YaGs126MiZpBA-UN7rgOUuhp.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
+<style>
+.printmessage{
+color: #b4b2b2;
+font-family: 'Open Sans', sans-serif;
+}
+.warningmessage{
+color: #FFAB02;
+font-family: 'Open Sans', sans-serif;
+}
+.errormessage{
+color: #ff0000;
+font-family: 'Open Sans', sans-serif;
+}
+.infomessage{
+color: #108EC0;
+font-family: 'Open Sans', sans-serif;
+}
+.consolemessage{
+color: #ffffff;
+font-family: 'Open Sans', sans-serif;
+}
+</style>
+<script type="text/javascript">
+var CurrentId=0;
+var PauseEverything=0;
+var Log;
+var Edit;
+var FormatTime;
+var NextId=0;
+var PendingMessages=[];
+FormatTime=function(a){
+a=a+"";
+if(a.length===1)return('0'+a);
+return(a);
+};
+this.Wrapper=function(MyId){
+while(true){
+if(PauseEverything==0){
+if(CurrentId==MyId){
+let MyData=PendingMessages[MyId];
+PendingMessages[MyId]=undefined;
+switch(MyData[1]){
+case "Console":
+document.body.innerHTML=document.body.innerHTML+"<div class=\"consolemessage\" id="+MyId+">"+MyData[0]+" - "+MyData[2]+"</div>";
+break;
+case "Error":
+document.body.innerHTML=document.body.innerHTML+"<div class=\"errormessage\" id="+MyId+">"+MyData[0]+" - "+MyData[2]+"</div>";
+break;
+case "Info":
+document.body.innerHTML=document.body.innerHTML+"<div class=\"infomessage\" id="+MyId+">"+MyData[0]+" - "+MyData[2]+"</div>";
+break;
+case "Print":
+document.body.innerHTML=document.body.innerHTML+"<div class=\"printmessage\" id="+MyId+">"+MyData[0]+" - "+MyData[2]+"</div>";
+break;
+case "Warning":
+document.body.innerHTML=document.body.innerHTML+"<div class=\"warningmessage\" id="+MyId+">"+MyData[0]+" - "+MyData[2]+"</div>";
+break;
+};
+CurrentId++;
+break;
+};
+};
+};
+};
+this.Wrapper2=function(MyId){
+while(true){
+if(PauseEverything===0){
+PauseEverything=MyId;
+};
+if(PauseEverything==MyId){
+PauseEverything=MyId;
+let MyData=PendingMessages[MyId];
+PendingMessages[MyId]=undefined;
+document.getElementById(MyId+"").innerHTML=MyData[0]+" - "+MyData[2];
+PauseEverything=0;
+break;
+};
+};
+};
+Log=function(Type,Message){
+let MyId=NextId;
+NextId++;
+let Now=new Date();
+let Time=FormatTime(Now.getHours())+":"+FormatTime(Now.getMinutes())+":"+FormatTime(Now.getSeconds())+" "+FormatTime(Now.getDate())+"/"+FormatTime((Now.getMonth()+1))+"/"+Now.getFullYear();
+PendingMessages[MyId]=[Message,Type,Time];
+this.Wrapper(MyId);
+return(MyId);
+};
+Edit=function(Id,Message){
+MyId=parseFloat(Id);
+let Now=new Date();
+let Time=FormatTime(Now.getHours())+":"+FormatTime(Now.getMinutes())+":"+FormatTime(Now.getSeconds())+" "+FormatTime(Now.getDate())+"/"+FormatTime((Now.getMonth()+1))+"/"+Now.getFullYear();
+PendingMessages[MyId]=[Message,"Edit",Time];
+this.Wrapper2(MyId);
+return;
+};
+</script>
+</head>
+<body style="background-color:#1e1e1e">
+</body>
+</html>
